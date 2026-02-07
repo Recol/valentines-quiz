@@ -4,7 +4,6 @@ import FloatingHearts from './components/FloatingHearts';
 import WelcomeScreen from './components/WelcomeScreen';
 import QuestionCard from './components/QuestionCard';
 import ProgressBar from './components/ProgressBar';
-import FeedbackModal from './components/FeedbackModal';
 import ResultsScreen from './components/ResultsScreen';
 import DateReveal from './components/DateReveal';
 
@@ -59,23 +58,6 @@ function App() {
                 question={quiz.currentQuestionData}
                 questionNumber={quiz.currentQuestion + 1}
                 onAnswer={quiz.answer}
-              />
-            </motion.div>
-          )}
-
-          {quiz.screen === quiz.SCREENS.FEEDBACK && (
-            <motion.div
-              key="feedback"
-              variants={pageVariants}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-              transition={pageTransition}
-              className="w-full max-w-lg"
-            >
-              <FeedbackModal
-                message={quiz.feedbackMessage}
-                onDismiss={quiz.dismissFeedback}
               />
             </motion.div>
           )}

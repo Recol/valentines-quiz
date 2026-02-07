@@ -1,3 +1,4 @@
+import { useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import DodgeButton from './DodgeButton';
 
@@ -15,13 +16,52 @@ const itemVariants = {
 };
 
 const buttonBase =
-  'w-full py-4 px-6 rounded-2xl font-medium text-base sm:text-lg transition-all duration-200 cursor-pointer border-2';
+  'w-full py-4 px-6 rounded-2xl font-medium text-base sm:text-lg transition-all duration-300 cursor-pointer border-2';
 
 const buttonNormal =
   'bg-white/40 border-white/50 text-charcoal hover:bg-rose-gold hover:text-white hover:border-rose-gold hover:shadow-lg active:scale-[0.97]';
 
+const buttonCorrect =
+  'bg-emerald-500/80 border-emerald-400 text-white shadow-lg scale-[1.02]';
+
+const buttonWrong =
+  'bg-red-400/80 border-red-300 text-white shadow-lg';
+
+const buttonDisabled =
+  'bg-white/20 border-white/30 text-charcoal/40 cursor-default';
+
+const FEEDBACK_DELAY = 1400;
+
 export default function QuestionCard({ question, questionNumber, onAnswer }) {
+  const [selectedIndex, setSelectedIndex] = useState(null);
+  const [locked, setLocked] = useState(false);
+
+  const handleAnswer = useCallback((index) => {
+    if (locked) return;
+    setSelectedIndex(index);
+    setLocked(true);
+
+    setTimeout(() => {
+      onAnswer(index);
+    }, FEEDBACK_DELAY);
+  }, [locked, onAnswer]);
+
   if (!question) return null;
+
+  const answered = selectedIndex !== null;
+  const isCorrectAnswer = answered && question.options[selectedIndex]?.isCorrect;
+
+  const getButtonClass = (index) => {
+    if (!answered) return `${buttonBase} ${buttonNormal}`;
+    if (index === selectedIndex) {
+      return `${buttonBase} ${question.options[index].isCorrect ? buttonCorrect : buttonWrong}`;
+    }
+    // Highlight the correct answer too so they learn
+    if (question.options[index].isCorrect) {
+      return `${buttonBase} ${buttonCorrect}`;
+    }
+    return `${buttonBase} ${buttonDisabled}`;
+  };
 
   return (
     <div className="glass-card p-6 sm:p-10">
@@ -45,16 +85,17 @@ export default function QuestionCard({ question, questionNumber, onAnswer }) {
         <div className="space-y-3">
           {question.options.map((option, index) => (
             <motion.div key={index} variants={itemVariants}>
-              {option.shouldDodge ? (
+              {option.shouldDodge && !answered ? (
                 <DodgeButton
                   text={option.text}
-                  onClick={() => onAnswer(index)}
-                  className={`${buttonBase} ${buttonNormal}`}
+                  onClick={() => handleAnswer(index)}
+                  className={getButtonClass(index)}
                 />
               ) : (
                 <button
-                  onClick={() => onAnswer(index)}
-                  className={`${buttonBase} ${buttonNormal}`}
+                  onClick={() => handleAnswer(index)}
+                  disabled={locked}
+                  className={getButtonClass(index)}
                 >
                   {option.text}
                 </button>
@@ -62,6 +103,26 @@ export default function QuestionCard({ question, questionNumber, onAnswer }) {
             </motion.div>
           ))}
         </div>
+
+        {/* Inline feedback message */}
+        {answered && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+            className="mt-6 text-center"
+          >
+            {isCorrectAnswer ? (
+              <p className="text-lg font-semibold text-emerald-600">
+                Correct! 🎉
+              </p>
+            ) : (
+              <p className="text-lg font-semibold text-red-500">
+                {question.wrongFeedback || "Not quite! 😅"}
+              </p>
+            )}
+          </motion.div>
+        )}
       </motion.div>
     </div>
   );
