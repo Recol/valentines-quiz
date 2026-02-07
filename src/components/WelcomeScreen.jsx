@@ -19,7 +19,7 @@ export default function WelcomeScreen({ onStart }) {
         className="font-[var(--font-heading)] text-3xl sm:text-4xl font-bold text-burgundy mb-4"
         style={{ fontFamily: 'var(--font-heading)' }}
       >
-        Happy Valentine's Day, Emily!
+        You solved the puzzle, so here's an early Valentine's Day gift!
       </motion.h1>
 
       <motion.p
