@@ -7,7 +7,6 @@ export default function DateReveal({ score, total }) {
   const [flipped, setFlipped] = useState(false);
 
   useEffect(() => {
-    // Auto-fire confetti on mount
     const timer = setTimeout(() => {
       fireHeartConfetti();
     }, 600);
@@ -48,7 +47,7 @@ export default function DateReveal({ score, total }) {
       >
         <div
           className="flip-card mx-auto cursor-pointer"
-          style={{ width: '100%', maxWidth: '400px', height: '320px' }}
+          style={{ width: '100%', maxWidth: '400px', height: '420px' }}
           onClick={handleFlip}
         >
           <div className={`flip-card-inner ${flipped ? 'flipped' : ''}`}>
@@ -71,40 +70,59 @@ export default function DateReveal({ score, total }) {
             </div>
 
             {/* Back of card */}
-            <div className="flip-card-back glass-card flex flex-col items-center justify-center p-8"
+            <div className="flip-card-back glass-card flex flex-col items-center justify-center p-6 sm:p-8"
               style={{ background: 'linear-gradient(135deg, rgba(136,14,79,0.15), rgba(183,110,121,0.2), rgba(255,193,204,0.25))' }}
             >
-              <div className="text-4xl mb-3">🌹</div>
+              <div className="text-3xl mb-2">🌹</div>
               <h3
                 className="text-2xl sm:text-3xl font-bold text-burgundy mb-1"
                 style={{ fontFamily: 'var(--font-heading)' }}
               >
                 {dateDetails.restaurant}
               </h3>
-              <p className="text-rose-gold font-medium text-lg mb-4">{dateDetails.location}</p>
+              <p className="text-rose-gold font-medium text-base mb-3">{dateDetails.location}</p>
 
-              <div className="space-y-2 mb-5">
+              <div className="space-y-1.5 mb-4">
                 <div className="flex items-center justify-center gap-2 text-charcoal/80">
                   <span>📅</span>
-                  <span className="font-medium">{dateDetails.date}</span>
+                  <span className="font-medium text-sm">{dateDetails.date}</span>
                 </div>
                 <div className="flex items-center justify-center gap-2 text-charcoal/80">
                   <span>🕘</span>
-                  <span className="font-medium">{dateDetails.time}</span>
+                  <span className="font-medium text-sm">{dateDetails.time}</span>
                 </div>
               </div>
 
-              <a
-                href={dateDetails.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={(e) => e.stopPropagation()}
-                className="inline-block bg-gradient-to-r from-rose-gold to-burgundy text-white
-                  font-semibold px-6 py-2.5 rounded-full shadow-lg hover:shadow-xl
-                  transition-all hover:scale-105 text-sm"
+              <p className="text-charcoal/60 text-xs mb-4 italic"
+                style={{ fontFamily: 'var(--font-heading)' }}
               >
-                View Restaurant 🔗
-              </a>
+                Dine in or order in — your choice! 💕
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-2 w-full items-center justify-center">
+                <a
+                  href={dateDetails.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()}
+                  className="inline-block bg-gradient-to-r from-rose-gold to-burgundy text-white
+                    font-semibold px-5 py-2.5 rounded-full shadow-lg hover:shadow-xl
+                    transition-all hover:scale-105 text-sm"
+                >
+                  Dine In 🍽️
+                </a>
+                <a
+                  href={dateDetails.orderUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()}
+                  className="inline-block bg-gradient-to-r from-burgundy to-rose-gold text-white
+                    font-semibold px-5 py-2.5 rounded-full shadow-lg hover:shadow-xl
+                    transition-all hover:scale-105 text-sm"
+                >
+                  Order In 🛋️
+                </a>
+              </div>
             </div>
           </div>
         </div>

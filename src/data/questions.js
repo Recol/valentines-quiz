@@ -64,6 +64,7 @@ export const dateDetails = {
   date: "Saturday, February 14th, 2026",
   time: "9:00 PM",
   url: "https://manjaros.co.uk/leeds/",
+  orderUrl: "https://manjaros.co.uk/leeds/order-online/",
   message: "I can't wait to spend Valentine's Day with you!",
 };
 
