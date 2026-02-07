@@ -128,10 +128,30 @@ export default function DateReveal({ score, total }) {
         </div>
       </motion.div>
 
+      {flipped && (
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.8, type: 'spring', stiffness: 150, damping: 20 }}
+          className="mt-6 glass-card p-5 mx-auto max-w-sm"
+        >
+          <p className="text-2xl mb-2">🎁✨</p>
+          <p
+            className="text-lg font-semibold text-burgundy mb-1"
+            style={{ fontFamily: 'var(--font-heading)' }}
+          >
+            ...and a mystery gift
+          </p>
+          <p className="text-charcoal/50 text-sm">
+            Something special is waiting for you on the day!
+          </p>
+        </motion.div>
+      )}
+
       <motion.p
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1 }}
+        transition={{ delay: flipped ? 1.5 : 1 }}
         className="mt-8 text-charcoal/40 text-sm italic"
         style={{ fontFamily: 'var(--font-heading)' }}
       >
@@ -141,7 +161,7 @@ export default function DateReveal({ score, total }) {
       <motion.p
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1.5 }}
+        transition={{ delay: flipped ? 2 : 1.5 }}
         className="mt-4 text-charcoal/30 text-xs"
       >
         Made with ❤️ by Decklin
